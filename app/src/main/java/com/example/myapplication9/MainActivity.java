@@ -1,6 +1,8 @@
 package com.example.myapplication9;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -27,7 +29,10 @@ public class MainActivity extends AppCompatActivity {
     private Button btnStaSto;
     private Button newGame;
     private int[] n;
-    private int n6, rightG = 0;
+    private int n6;
+    public static int rightG = 0;
+    private  Button score;
+
     private Handler handler;
     private Runnable runnable;
 
@@ -40,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         rightGuesses= findViewById(R.id.textView8);
         btnStaSto = findViewById(R.id.button);
         newGame = findViewById(R.id.button2);
+        score = findViewById(R.id.button4);
         //*************************************
         n[0]= (int) (Math.random() * ((39 - 3 + 1) + 3));
         n[1]= (int) (Math.random() * ((39 - 3 + 1) + 3));
@@ -67,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         a4.setText(String.valueOf(n[3]));
         a5.setText(String.valueOf(n[4]));
         handler = new Handler(Looper.getMainLooper());
+        Intent scroeAC = new Intent(MainActivity.this,yourScore.class);
 
         runnable = new Runnable() {
             @Override
@@ -87,29 +94,46 @@ public class MainActivity extends AppCompatActivity {
                     btnStaSto.setText("start");
                     stopSpinning();
                 }
-
+                if(n6==n[0]){
+                    rightG++;
+                    rightGuesses.setText("right guesses :"+String.valueOf(rightG));
+                    a1.setBackgroundColor(Color.RED);
+                }
+                if(n6==n[1]){
+                    rightG++;
+                    rightGuesses.setText("right guesses :"+String.valueOf(rightG));
+                    a2.setBackgroundColor(Color.RED);
+                }
+                if(n6==n[2]){
+                    rightG++;
+                    rightGuesses.setText("right guesses :"+String.valueOf(rightG));
+                    a3.setBackgroundColor(Color.RED);
+                }
+                if(n6==n[3]){
+                    rightG++;
+                    rightGuesses.setText("right guesses :"+String.valueOf(rightG));
+                    a4.setBackgroundColor(Color.RED);
+                }
+                if(n6==n[4]){
+                    rightG++;
+                    rightGuesses.setText("right guesses :"+String.valueOf(rightG));
+                    a5.setBackgroundColor(Color.RED);
+                }
             }
         });
 
-        for (int j : n) {
-            if (j == n6) {
-                rightG++;
-                rightGuesses.setText("right guesses : " + rightG);
-            }
-        }
-        if(rightG==5){
+
             newGame.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    a1.setText(0);
-                    a2.setText(0);
-                    a3.setText(0);
-                    a4.setText(0);
-                    a5.setText(0);
-                    n6=0;
-                    rightGuesses.setText("right guesses :0");
+
+                }
+            });
+            score.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(scroeAC);
                 }
             });
         }
     }
-}

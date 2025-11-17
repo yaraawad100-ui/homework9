@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -30,11 +31,14 @@ public class MainActivity extends AppCompatActivity {
     private Button newGame;
     private int[] n;
     private int n6;
-    public static int rightG = 0;
+    private EditText name;
+    private int rightG = 0;
+    private int counter=0;
     private  Button score;
 
     private Handler handler;
     private Runnable runnable;
+
 
     private void startSpinning() {
         handler.post(runnable);
@@ -59,8 +63,10 @@ public class MainActivity extends AppCompatActivity {
         a6 = findViewById(R.id.textView6);
         rightGuesses= findViewById(R.id.textView8);
         btnStaSto = findViewById(R.id.button);
+        // btnStaSto.setEnabled(false);
         newGame = findViewById(R.id.button2);
         score = findViewById(R.id.button4);
+        name=findViewById(R.id.editTextText);
         //*************************************
         n[0]= (int) (Math.random() * ((39 - 3 + 1) + 3));
         n[1]= (int) (Math.random() * ((39 - 3 + 1) + 3));
@@ -73,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         a4.setText(String.valueOf(n[3]));
         a5.setText(String.valueOf(n[4]));
         handler = new Handler(Looper.getMainLooper());
-        Intent scroeAC = new Intent(MainActivity.this,yourScore.class);
+        Intent intent = new  Intent (this,yourScore.class);
 
         runnable = new Runnable() {
             @Override
@@ -87,7 +93,11 @@ public class MainActivity extends AppCompatActivity {
         btnStaSto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnStaSto.getText().toString().equals("start")){
+                if(counter<6)
+                    counter+=1;
+                if(counter==6)
+                    btnStaSto.setEnabled(false);
+                    if(btnStaSto.getText().toString().equals("start")){
                     btnStaSto.setText("stop");
                     startSpinning();
                 } else {
@@ -126,13 +136,30 @@ public class MainActivity extends AppCompatActivity {
             newGame.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    n[0]= (int) (Math.random() * ((39 - 3 + 1) + 3));
+                    n[1]= (int) (Math.random() * ((39 - 3 + 1) + 3));
+                    n[2]= (int) (Math.random() * ((39 - 3 + 1) + 3));
+                    n[3]= (int) (Math.random() * ((39 - 3 + 1) + 3));
+                    n[4]= (int) (Math.random() * ((39 - 3 + 1) + 3));
+                    a1.setText(String.valueOf(n[0]));
+                    a2.setText(String.valueOf(n[1]));
+                    a3.setText(String.valueOf(n[2]));
+                    a4.setText(String.valueOf(n[3]));
+                    a5.setText(String.valueOf(n[4]));
+                    rightGuesses.setText("right guesses : "+String.valueOf(0));
+                    a4.setBackgroundColor(Color.WHITE);
+                    a1.setBackgroundColor(Color.WHITE);
+                    a5.setBackgroundColor(Color.WHITE);
+                    a2.setBackgroundColor(Color.WHITE);
+                    a3.setBackgroundColor(Color.WHITE);
                 }
             });
             score.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(scroeAC);
+                    intent.putExtra("SCORE", rightG);
+                    intent.putExtra("NAME", name.getText().toString());
+                    startActivity(intent);
                 }
             });
         }

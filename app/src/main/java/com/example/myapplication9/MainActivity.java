@@ -1,6 +1,9 @@
 package com.example.myapplication9;
 
+import static org.jetbrains.annotations.Nls.Capitalization.Title;
+
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -34,10 +38,46 @@ public class MainActivity extends AppCompatActivity {
     private EditText name;
     private int rightG = 0;
     private int counter=0;
+    private Button exit;
     private  Button score;
 
     private Handler handler;
     private Runnable runnable;
+    private AlertDialog dialog;
+
+    private void alertDial0g(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle("Exit");
+        alertDialog.setMessage("Are you sure");
+        alertDialog.setCancelable(true);
+        alertDialog.setIcon(R.drawable.alert);
+        alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+                System.exit(0);
+                dialogInterface.dismiss();
+            }
+        });
+
+        alertDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                dialogInterface.dismiss();
+            }
+        });
+
+        alertDialog.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                dialogInterface.dismiss();
+            }
+        });
+
+        dialog = alertDialog.create();
+    }
 
 
     private void startSpinning() {
@@ -54,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        alertDial0g();
+
         n = new int[5];
         a1 = findViewById(R.id.textView);
         a2 = findViewById(R.id.textView2);
@@ -63,10 +106,10 @@ public class MainActivity extends AppCompatActivity {
         a6 = findViewById(R.id.textView6);
         rightGuesses= findViewById(R.id.textView8);
         btnStaSto = findViewById(R.id.button);
-        // btnStaSto.setEnabled(false);
         newGame = findViewById(R.id.button2);
         score = findViewById(R.id.button4);
         name=findViewById(R.id.editTextText);
+        exit=findViewById(R.id.button3);
         //*************************************
         n[0]= (int) (Math.random() * ((39 - 3 + 1) + 3));
         n[1]= (int) (Math.random() * ((39 - 3 + 1) + 3));
@@ -95,12 +138,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(counter<6)
                     counter+=1;
-                if(counter==6)
+                if(counter==6){
                     btnStaSto.setEnabled(false);
                     if(btnStaSto.getText().toString().equals("start")){
                     btnStaSto.setText("stop");
                     startSpinning();
-                } else {
+                }}else {
                     btnStaSto.setText("start");
                     stopSpinning();
                 }
@@ -136,6 +179,7 @@ public class MainActivity extends AppCompatActivity {
             newGame.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    btnStaSto.setEnabled(true);
                     n[0]= (int) (Math.random() * ((39 - 3 + 1) + 3));
                     n[1]= (int) (Math.random() * ((39 - 3 + 1) + 3));
                     n[2]= (int) (Math.random() * ((39 - 3 + 1) + 3));
@@ -160,6 +204,14 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra("SCORE", rightG);
                     intent.putExtra("NAME", name.getText().toString());
                     startActivity(intent);
+                    finish();
+                }
+            });
+
+            exit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.show();
                 }
             });
         }

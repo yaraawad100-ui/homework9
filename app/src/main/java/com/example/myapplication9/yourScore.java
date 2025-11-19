@@ -34,6 +34,7 @@ public class yourScore extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(intent2);
+                finish();
             }
         });
     }

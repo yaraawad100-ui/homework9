@@ -3,6 +3,7 @@ package com.example.myapplication9;
 import static org.jetbrains.annotations.Nls.Capitalization.Title;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -38,9 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText name;
     private int rightG = 0;
     private int counter=0;
-    private Button exit;
-    private  Button score;
-
+    private Button score,exit;
+    private Button yesbtn,nobtn;
     private Handler handler;
     private Runnable runnable;
     private AlertDialog dialog;
@@ -123,6 +123,9 @@ public class MainActivity extends AppCompatActivity {
         a5.setText(String.valueOf(n[4]));
         handler = new Handler(Looper.getMainLooper());
         Intent intent = new  Intent (this,yourScore.class);
+        Dialog dialog1 = new Dialog(this);
+        dialog.setContentView(R.layout.my_dialog);
+
 
         runnable = new Runnable() {
             @Override
